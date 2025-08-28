@@ -1,0 +1,52 @@
+﻿@model ST10449392_CLDV6212_POE.Models.Customer
+
+@{
+    ViewData["Title"] = "Edit Customer";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Edit Customer</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post">
+                @* Hidden keys needed for Table Storage *@
+                <input type="hidden" asp-for="PartitionKey" />
+                <input type="hidden" asp-for="RowKey" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Customer_Name" class="form-label"></label>
+                    <input asp-for="Customer_Name" class="form-control" />
+                    <span asp-validation-for="Customer_Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="email" class="form-label"></label>
+                    <input asp-for="email" class="form-control" />
+                    <span asp-validation-for="email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="password" class="form-label"></label>
+                    <input asp-for="password" class="form-control" />
+                    <span asp-validation-for="password" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<!-- 
+I used ChatGPT to help me create a more visually appealing Edit page.
+https://chatgpt.com/share/68b06772-a104-8011-817e-01f7d18b1342
+-->

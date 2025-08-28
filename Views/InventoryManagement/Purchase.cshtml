@@ -1,0 +1,84 @@
+﻿@model ST10449392_CLDV6212_POE.Models.InventoryManagement
+
+@{
+    var customers = ViewData["Customer"] as List<ST10449392_CLDV6212_POE.Models.Customer>;
+    var products = ViewData["Product"] as List<ST10449392_CLDV6212_POE.Models.Product>;
+    ViewData["Title"] = "New Purchase";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">New Purchase</h1>
+
+    @if (customers == null || customers.Count == 0 || products == null || products.Count == 0)
+    {
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> Please ensure that there are customers and products available before making a purchase.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Purchase" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Customer_Id" class="form-label">Select Customer</label>
+                        <select asp-for="Customer_Id" class="form-select"
+                                asp-items="@(new SelectList(customers, "Customer_Id", "Customer_Name"))">
+                            <option value="">-- Select Customer --</option>
+                        </select>
+                        <span asp-validation-for="Customer_Id" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Product_Id" class="form-label">Select Product</label>
+                        <select asp-for="Product_Id" class="form-select"
+                                asp-items="@(new SelectList(products, "Product_Id", "Product_Name"))">
+                            <option value="">-- Select Product --</option>
+                        </select>
+                        <span asp-validation-for="Product_Id" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Purchase_Date" class="form-label">Purchase Date</label>
+                        <input asp-for="Purchase_Date" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="Purchase_Date" class="text-danger"></span>
+                    </div>
+
+                    <!-- Hidden fields to capture selected names -->
+                    <input type="hidden" id="CustomerName" name="CustomerName" />
+                    <input type="hidden" id="ProductName" name="ProductName" />
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Submit Purchase</button>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const customerDropdown = document.getElementById("Customer_Id");
+            const productDropdown = document.getElementById("Product_Id");
+            const customerNameField = document.getElementById("CustomerName");
+            const productNameField = document.getElementById("ProductName");
+
+            // Update hidden fields when dropdowns change
+            customerDropdown.addEventListener("change", function () {
+                customerNameField.value = this.options[this.selectedIndex].text;
+            });
+
+            productDropdown.addEventListener("change", function () {
+                productNameField.value = this.options[this.selectedIndex].text;
+            });
+
+            // Set initial values in case a selection already exists
+            if (customerDropdown.selectedIndex > 0)
+                customerNameField.value = customerDropdown.options[customerDropdown.selectedIndex].text;
+
+            if (productDropdown.selectedIndex > 0)
+                productNameField.value = productDropdown.options[productDropdown.selectedIndex].text;
+        </script>
+    }
+</div>
