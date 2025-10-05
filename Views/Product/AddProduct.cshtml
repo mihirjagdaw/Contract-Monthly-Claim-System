@@ -4,6 +4,17 @@
     ViewData["Title"] = "Add Product";
 }
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+
 <div class="container mt-4">
     <h1 class="mb-4">Add New Product</h1>
 

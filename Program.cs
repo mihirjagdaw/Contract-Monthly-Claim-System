@@ -33,6 +33,8 @@ namespace ST10449392_CLDV6212_POE
                 return new AzureFileShareService(connectionString, "productshare");
             });
 
+            builder.Services.AddHttpClient();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -14,9 +14,9 @@
     <table class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Customer_Name)</th>
-                <th>@Html.DisplayNameFor(model => model.email)</th>
-                <th>@Html.DisplayNameFor(model => model.password)</th>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Email)</th>
+                <th>@Html.DisplayNameFor(model => model.Password)</th>
                 <th class="text-center">Actions</th>
             </tr>
         </thead>
@@ -24,9 +24,9 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Customer_Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.password)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Password)</td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center gap-2">
                             <a asp-action="Edit"
