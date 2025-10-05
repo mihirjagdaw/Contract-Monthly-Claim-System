@@ -80,27 +80,20 @@ namespace ST10449392_CLDV6212_POE.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCustomer(Customer customer)
         {
-            var queuePayload = new
-            {
-                Name = customer.Name,
-                Email = customer.Email,
-                Password = customer.Password
-            };
-
             var httpClient = _httpClientFactory.CreateClient();
             var apiBaseUrl = _configuration["FunctionApi:BaseUrl"];
-            var jsonContent = JsonSerializer.Serialize(queuePayload);
+
+            var jsonContent = JsonSerializer.Serialize(customer);
             var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.PostAsync($"{apiBaseUrl}customer", httpContent);
+            // Notice the URL: use your new "/customer-direct" endpoint
+            var response = await httpClient.PostAsync($"{apiBaseUrl}customer-direct", httpContent);
             if (response.IsSuccessStatusCode)
-            {
                 return RedirectToAction("Index");
-            }
+
             ViewBag.ErrorMessage = "Failed to add customer.";
             return View(customer);
         }
-
 
         [HttpGet]
         public IActionResult AddCustomer()
