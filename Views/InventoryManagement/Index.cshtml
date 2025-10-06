@@ -14,7 +14,6 @@
     <table class="table table-striped table-hover">
         <thead class="table-dark">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Inventory_Id)</th>
             <th>@Html.DisplayNameFor(model => model.PartitionKey)</th>
             <th>@Html.DisplayNameFor(model => model.RowKey)</th>
             <th>@Html.DisplayNameFor(model => model.Timestamp)</th>
@@ -27,7 +26,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Inventory_Id)</td>
                 <td>@Html.DisplayFor(modelItem => item.PartitionKey)</td>
                 <td>@Html.DisplayFor(modelItem => item.RowKey)</td>
                 <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>

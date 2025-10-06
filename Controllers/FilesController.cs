@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using ST10449392_CLDV6212_POE.Models;
 using ST10449392_CLDV6212_POE.Services;
 using System.Net.Http;
+using System.Text.Json;
 
 namespace ST10449392_CLDV6212_POE.Controllers
 {
@@ -27,20 +29,52 @@ namespace ST10449392_CLDV6212_POE.Controllers
             _fileShareService = new AzureFileShareService(connectionString, fileShareName);
         }
 
+        //public async Task<IActionResult> Index()
+        //{
+        //    List<FileModel> files;
+        //    try
+        //    {
+        //        files = await _fileShareService.ListFilesAsync("uploads");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.Message = $"Failed to load files : {ex.Message}";
+        //        files = new List<FileModel>();
+        //    }
+            
+        //    return View(files);
+        //}
+
         public async Task<IActionResult> Index()
         {
-            List<FileModel> files;
+            var httpClient = _httpClientFactory.CreateClient();
+            var apiBaseUrl = _configuration["FunctionApi:BaseUrl"];
+
             try
             {
-                files = await _fileShareService.ListFilesAsync("uploads");
+                var httpResponseMessage = await httpClient.GetAsync($"{apiBaseUrl}files");
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
+
+                    var files = await JsonSerializer.DeserializeAsync<IEnumerable<FileModel>>(contentStream, options);
+                    return View(files);
+                }
             }
-            catch (Exception ex)
+            catch (HttpRequestException)
             {
-                ViewBag.Message = $"Failed to load files : {ex.Message}";
-                files = new List<FileModel>();
+                ViewBag.ErrorMessage = "Could not connect to the API. Please ensure the Azure Function is running.";
+                return View(new List<FileModel>());
             }
-            
-            return View(files);
+
+            ViewBag.ErrorMessage = "An error occurred while retrieving data from the API.";
+            return View(new List<FileModel>());
         }
 
         //public async Task<IActionResult> UploadFile (IFormFile file)

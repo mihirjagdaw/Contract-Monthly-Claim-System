@@ -6,26 +6,19 @@ namespace ST10449392_CLDV6212_POE.Models
 {
     public class InventoryManagement : ITableEntity
     {
-        [Key]
-        public int Inventory_Id { get; set; }
-
-        public string? PartitionKey { get; set; }
-
-        public string? RowKey { get; set; }
-
+        
+        public string PartitionKey { get; set; } = "Purchase";
+        public string RowKey { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset? Timestamp { get; set; }
-
         public ETag ETag { get; set; }
 
-        // Introduce validation sample
+        [Required]
+        public string Customer_Id { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please select a customer")]
-        public string Customer_Id { get; set; } //FK to Customer who purchased the product (rowkey of customer)
+        [Required]
+        public string Product_Id { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please select a product")]
-        public string Product_Id { get; set; } //FK to Product that was purchased (rowkey of product)
-
-        [Required(ErrorMessage = "Please select the date of purchase")]
+        [Required]
         public DateTime Purchase_Date { get; set; }
 
     }

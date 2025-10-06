@@ -1,4 +1,4 @@
-﻿@model List<ST10449392_CLDV6212_POE.Models.FileModel>
+﻿@model IEnumerable<FileModel>?
 
 @{
     ViewData["Title"] = "Files";
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Display Uploaded Files -->
-    @if (Model != null && Model.Count > 0)
+    @if (Model != null)
     {
         <div class="card p-3">
             <h5>Uploaded Files</h5>
