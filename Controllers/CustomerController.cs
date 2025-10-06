@@ -20,10 +20,11 @@ namespace ST10449392_CLDV6212_POE.Controllers
         //    _tableStorageService = tableStorageService;
         //}
 
-        public CustomerController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public CustomerController(IHttpClientFactory httpClientFactory, IConfiguration configuration, TableStorageService tableStorageService)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _tableStorageService = tableStorageService;
         }
 
         //public async Task<IActionResult> Index()
