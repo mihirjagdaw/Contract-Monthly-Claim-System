@@ -77,58 +77,6 @@ namespace ST10449392_CLDV6212_POE.Controllers
             return View(new List<FileModel>());
         }
 
-        //public async Task<IActionResult> UploadFile (IFormFile file)
-        //{
-        //    if (file == null || file.Length == 0)
-        //    {
-        //        ModelState.AddModelError("File", "Please select a file to upload");
-        //        return await Index();
-        //    }
-
-        //    try
-        //    {
-        //        using (var stream = file.OpenReadStream())
-        //        {
-        //            string directoryName = "uploads";
-        //            string fileName = file.FileName;
-        //            await _fileShareService.UploadFileAsync(directoryName, fileName, stream);
-        //        }
-
-        //        TempData["Message"] = $"File '{file.FileName}' uploaded successfully.";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        TempData["Message"] = $"Failed to upload file: {e.Message}";
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> UploadFile(IFormFile file)
-        //{
-        //    if (file == null || file.Length == 0)
-        //    {
-        //        TempData["Message"] = "Please select a file.";
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    using var content = new MultipartFormDataContent();
-        //    var fileContent = new StreamContent(file.OpenReadStream());
-        //    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
-        //    content.Add(fileContent, "file", file.FileName);
-
-        //    var baseUrl = _configuration["FunctionApi:BaseUrl"]?.TrimEnd('/');
-        //    var client = _httpClientFactory.CreateClient();
-        //    var response = await client.PostAsync($"{baseUrl}/files", content);
-
-        //    TempData["Message"] = response.IsSuccessStatusCode
-        //        ? "File uploaded successfully."
-        //        : $"Error: {await response.Content.ReadAsStringAsync()}";
-
-        //    return RedirectToAction("Index");
-        //}
-
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
