@@ -20,10 +20,10 @@ namespace ST10449392_CLDV6212_POE.Models
         // Introduce validation sample
 
         [Required(ErrorMessage = "Please select a customer")]
-        public int Customer_Id { get; set; } //FK to Customer who purchased the product
+        public string Customer_Id { get; set; } //FK to Customer who purchased the product (rowkey of customer)
 
         [Required(ErrorMessage = "Please select a product")]
-        public int Product_Id { get; set; } //FK to Product that was purchased
+        public string Product_Id { get; set; } //FK to Product that was purchased (rowkey of product)
 
         [Required(ErrorMessage = "Please select the date of purchase")]
         public DateTime Purchase_Date { get; set; }

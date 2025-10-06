@@ -9,6 +9,7 @@ namespace ST10449392_CLDV6212_POE.Services
         public QueueService(string connectionString, string queueName)
         {
             _queueClient = new QueueClient(connectionString, queueName);
+            _queueClient.CreateIfNotExistsAsync();
         }
 
         public async Task SendMessageAsync(string message)

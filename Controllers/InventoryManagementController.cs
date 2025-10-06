@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using ST10449392_CLDV6212_POE.Models;
 using ST10449392_CLDV6212_POE.Services;
 
@@ -56,11 +57,15 @@ namespace ST10449392_CLDV6212_POE.Controllers
                 inventoryManagement.PartitionKey = "InventoryPartition";
                 inventoryManagement.RowKey = Guid.NewGuid().ToString();
 
-                await _tableStorageService.AddInventoryManagementAsync(inventoryManagement);
+                //await _tableStorageService.AddInventoryManagementAsync(inventoryManagement);
 
                 // Use names directly from the form
-                string message = $"New purchase by customer {CustomerName} of product {ProductName} on {inventoryManagement.Purchase_Date}";
-                await _queueService.SendMessageAsync(message);
+
+                //string message = $"New purchase by customer {CustomerName} of product {ProductName} on {inventoryManagement.Purchase_Date}";
+                //await _queueService.SendMessageAsync(message);
+
+                string purchaseJson = JsonSerializer.Serialize(inventoryManagement);
+                await _queueService.SendMessageAsync(purchaseJson);
 
                 return RedirectToAction("Index");
             }

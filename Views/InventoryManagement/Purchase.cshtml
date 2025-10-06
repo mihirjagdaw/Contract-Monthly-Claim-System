@@ -25,7 +25,7 @@
                     <div class="mb-3">
                         <label asp-for="Customer_Id" class="form-label">Select Customer</label>
                         <select asp-for="Customer_Id" class="form-select"
-                                asp-items="@(new SelectList(customers, "Customer_Id", "Customer_Name"))">
+                                asp-items="@(new SelectList(customers, "RowKey", "Name"))">
                             <option value="">-- Select Customer --</option>
                         </select>
                         <span asp-validation-for="Customer_Id" class="text-danger"></span>
@@ -34,7 +34,7 @@
                     <div class="mb-3">
                         <label asp-for="Product_Id" class="form-label">Select Product</label>
                         <select asp-for="Product_Id" class="form-select"
-                                asp-items="@(new SelectList(products, "Product_Id", "Product_Name"))">
+                                asp-items="@(new SelectList(products, "RowKey", "Product_Name"))">
                             <option value="">-- Select Product --</option>
                         </select>
                         <span asp-validation-for="Product_Id" class="text-danger"></span>

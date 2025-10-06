@@ -1,4 +1,8 @@
-﻿@model IEnumerable<ST10449392_CLDV6212_POE.Models.Customer>
+﻿@using Azure.Core
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Linq;
+
+@model IEnumerable<ST10449392_CLDV6212_POE.Models.Customer>
 
 @{
     ViewData["Title"] = "Customers";
@@ -13,42 +17,41 @@
 
     <table class="table table-striped table-hover">
         <thead class="table-dark">
-            <tr>
-                <th>@Html.DisplayNameFor(model => model.Name)</th>
-                <th>@Html.DisplayNameFor(model => model.Email)</th>
-                <th>@Html.DisplayNameFor(model => model.Password)</th>
-                <th class="text-center">Actions</th>
-            </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Password)</th>
+            <th class="text-center">Actions</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Password)</td>
-                    <td class="text-center">
-                        <div class="d-flex justify-content-center gap-2">
-                            <a asp-action="Edit"
-                               asp-route-partitionKey="@item.PartitionKey"
-                               asp-route-rowKey="@item.RowKey"
-                               class="btn btn-warning btn-sm">Edit</a>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                        <a asp-action="Edit"
+                           asp-route-partitionKey="@item.PartitionKey"
+                           asp-route-rowKey="@item.RowKey"
+                           class="btn btn-warning btn-sm">Edit</a>
 
-                            <form asp-action="Delete" method="post" onsubmit="return confirm('Are you sure you want to delete this Customer?');">
-                                <input type="hidden" name="partitionKey" value="@item.PartitionKey" />
-                                <input type="hidden" name="rowKey" value="@item.RowKey" />
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            }
+                        <form asp-action="Delete" method="post" onsubmit="return confirm('Are you sure you want to delete this Customer?');">
+                            <input type="hidden" name="partitionKey" value="@item.PartitionKey" />
+                            <input type="hidden" name="rowKey" value="@item.RowKey" />
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
 
-                            
 <!--
 I used AI (ChatGPT) to create a more aesthetically pleasing Index page, here is the chat:
-https://chatgpt.com/share/68b06772-a104-8011-817e-01f7d18b1342
+[https://chatgpt.com/share/68b06772-a104-8011-817e-01f7d18b1342]
 -->
