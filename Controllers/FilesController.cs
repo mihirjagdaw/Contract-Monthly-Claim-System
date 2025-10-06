@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using ST10449392_CLDV6212_POE.Models;
 using ST10449392_CLDV6212_POE.Services;
 using System.Net.Http;
@@ -13,37 +12,16 @@ namespace ST10449392_CLDV6212_POE.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
 
-        //public FilesController(AzureFileShareService fileShareService)
-        //{
-        //    _fileShareService = fileShareService;
-        //}
-
         public FilesController(AzureFileShareService fileShareService, IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
 
             string connectionString = _configuration.GetConnectionString("AzureStorage");
-            string fileShareName = "productshare"; 
+            string fileShareName = "productshare";
 
             _fileShareService = new AzureFileShareService(connectionString, fileShareName);
         }
-
-        //public async Task<IActionResult> Index()
-        //{
-        //    List<FileModel> files;
-        //    try
-        //    {
-        //        files = await _fileShareService.ListFilesAsync("uploads");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.Message = $"Failed to load files : {ex.Message}";
-        //        files = new List<FileModel>();
-        //    }
-            
-        //    return View(files);
-        //}
 
         public async Task<IActionResult> Index()
         {
@@ -102,8 +80,6 @@ namespace ST10449392_CLDV6212_POE.Controllers
             return RedirectToAction("Index");
         }
 
-
-
         public async Task<IActionResult> DownloadFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -112,7 +88,8 @@ namespace ST10449392_CLDV6212_POE.Controllers
             }
             try
             {
-                var fileStream = await _fileShareService.DownloadFileAsync("uploads", fileName);
+                // Pass null or empty string as directoryName because files are at root
+                var fileStream = await _fileShareService.DownloadFileAsync(null, fileName);
                 if (fileStream == null)
                 {
                     return NotFound($"File '{fileName}' not found.");
