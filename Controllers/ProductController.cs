@@ -29,11 +29,49 @@ namespace ST10449392_CLDV6212_POE.Controllers
 
         //public async Task<IActionResult> Index()
         //{
-        //    var products = await _tableStorageService.GetAllProductsAsync();
-        //    return View(products);
+        //    try
+        //    {
+        //        var baseUrl = _configuration["FunctionApi:BaseUrl"]?.TrimEnd('/');
+        //        if (string.IsNullOrEmpty(baseUrl))
+        //        {
+        //            throw new Exception("Base URL is missing or invalid in configuration.");
+        //        }
+
+        //        var client = _httpClientFactory.CreateClient();
+        //        client.BaseAddress = new Uri(baseUrl + "/");
+
+        //        // Call your Azure Function endpoint (GET /api/product)
+        //        var response = await client.GetAsync("product");
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            using var contentStream = await response.Content.ReadAsStreamAsync();
+        //            var options = new JsonSerializerOptions
+        //            {
+        //                PropertyNameCaseInsensitive = true
+        //            };
+
+        //            var products = await JsonSerializer.DeserializeAsync<IEnumerable<Product>>(contentStream, options);
+        //            return View(products);
+        //        }
+
+        //        // Non-success response (like 404 or 500)
+        //        ViewBag.ErrorMessage = $"Error retrieving data: {response.StatusCode}";
+        //        return View(new List<Product>());
+        //    }
+        //    catch (HttpRequestException)
+        //    {
+        //        ViewBag.ErrorMessage = "Could not connect to the API. Please ensure Azure Function is running.";
+        //        return View(new List<Product>());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.ErrorMessage = $"Unexpected error: {ex.Message}";
+        //        return View(new List<Product>());
+        //    }
         //}
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             try
             {
@@ -46,7 +84,6 @@ namespace ST10449392_CLDV6212_POE.Controllers
                 var client = _httpClientFactory.CreateClient();
                 client.BaseAddress = new Uri(baseUrl + "/");
 
-                // Call your Azure Function endpoint (GET /api/product)
                 var response = await client.GetAsync("product");
 
                 if (response.IsSuccessStatusCode)
@@ -58,10 +95,18 @@ namespace ST10449392_CLDV6212_POE.Controllers
                     };
 
                     var products = await JsonSerializer.DeserializeAsync<IEnumerable<Product>>(contentStream, options);
+
+                    // Filter in memory if search string is provided
+                    if (!string.IsNullOrEmpty(searchString) && products != null)
+                    {
+                        products = products.Where(p => p.Product_Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+                    }
+
+                    ViewData["CurrentFilter"] = searchString;
+
                     return View(products);
                 }
 
-                // Non-success response (like 404 or 500)
                 ViewBag.ErrorMessage = $"Error retrieving data: {response.StatusCode}";
                 return View(new List<Product>());
             }
@@ -76,6 +121,7 @@ namespace ST10449392_CLDV6212_POE.Controllers
                 return View(new List<Product>());
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(Product product, IFormFile? file)
