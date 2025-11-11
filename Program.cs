@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using ST10449392_CLDV6212_POE.Data;
 using ST10449392_CLDV6212_POE.Services;
 
 namespace ST10449392_CLDV6212_POE
@@ -12,6 +14,14 @@ namespace ST10449392_CLDV6212_POE
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession();
 
             // Register BlobService with dependency injection
             builder.Services.AddSingleton(new TableStorageService(configuration.GetConnectionString("AzureStorage")));
@@ -50,11 +60,13 @@ namespace ST10449392_CLDV6212_POE
 
             app.UseRouting();
 
+            app.UseSession();
+
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Login}/{id?}");
 
             app.Run();
         }
