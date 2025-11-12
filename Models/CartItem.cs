@@ -8,16 +8,16 @@ namespace ST10449392_CLDV6212_POE.Models
         [Key]
         public int CartItemId { get; set; }
 
-        [ForeignKey("User")]
         public int UserId { get; set; }
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+        public string ProductRowKey { get; set; } 
+
+        public string ProductName { get; set; }
 
         public int Quantity { get; set; }
 
-        public virtual User User { get; set; }
-
-        public virtual Product Product { get; set; }
+        [NotMapped]
+        public Product Product { get; set; }
     }
+
 }

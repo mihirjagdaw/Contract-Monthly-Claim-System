@@ -31,6 +31,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">Manage Orders</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Products</a>
+                            </li>
                         }
                         else if (Context.Session.GetString("Role") == "Customer")
                         {
