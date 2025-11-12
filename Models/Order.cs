@@ -20,6 +20,5 @@ namespace ST10449392_CLDV6212_POE.Models
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 
-
     }
 }
