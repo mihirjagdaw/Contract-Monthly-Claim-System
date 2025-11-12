@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Azure;
 using Azure.Data.Tables;
 
@@ -20,6 +21,7 @@ namespace ST10449392_CLDV6212_POE.Models
 
         public string? RowKey { get; set; }
 
+        [NotMapped]
         public ETag ETag { get; set; }
 
         public DateTimeOffset? Timestamp { get; set; }

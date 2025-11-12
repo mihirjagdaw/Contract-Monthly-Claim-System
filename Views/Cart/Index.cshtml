@@ -1,0 +1,54 @@
+﻿@model List<ST10449392_CLDV6212_POE.Models.CartItem>
+
+@{
+    ViewData["Title"] = "My Cart";
+    decimal cartTotal = 0;
+}
+
+<h2>My Cart</h2>
+
+@if (!Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            decimal price = 0;
+            decimal.TryParse(item.Product.Price, out price);
+            decimal lineTotal = price * item.Quantity;
+            cartTotal += lineTotal;
+
+            <tr>
+                <td>@item.Product.Product_Name</td>
+                <td>@price.ToString("C")</td>
+                <td>@item.Quantity</td>
+                <td>@lineTotal.ToString("C")</td>
+                <td>
+                    <a asp-action="RemoveFromCart" asp-route-id="@item.CartItemId" class="btn btn-danger btn-sm">Remove</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+            <td colspan="2"><strong>@cartTotal.ToString("C")</strong></td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <a asp-action="ConfirmOrder" class="btn btn-success">Confirm Order</a>
+}

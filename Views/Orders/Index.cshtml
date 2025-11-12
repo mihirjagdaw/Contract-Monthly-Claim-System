@@ -1,0 +1,35 @@
+﻿@model IEnumerable<ST10449392_CLDV6212_POE.Models.Order>
+
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">All Orders</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.User.Username</td>
+                <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td>@order.Status</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-sm btn-primary">View</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

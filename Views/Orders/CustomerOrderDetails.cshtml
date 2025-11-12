@@ -1,0 +1,42 @@
+﻿@model ST10449392_CLDV6212_POE.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details - #@Model.OrderId</h2>
+
+<p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
+<p><strong>Status:</strong> @Model.Status</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            decimal price = 0;
+            decimal.TryParse(item.Product.Price, out price);
+            <tr>
+                <td>@item.Product.Product_Name</td>
+                <td>@price.ToString("C")</td>
+                <td>@item.Quantity</td>
+                <td>@(price* item.Quantity).ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+            <td>@Model.OrderItems.Sum(oi => decimal.TryParse(oi.Product.Price, out var p) ? p * oi.Quantity : 0).ToString("C")</td>
+        </tr>
+    </tfoot>
+</table>
+
+<a asp-action="CustomerOrders" class="btn btn-primary">Back to My Orders</a>
