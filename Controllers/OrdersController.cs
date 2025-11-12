@@ -1,34 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ST10449392_CLDV6212_POE.Data;
 using ST10449392_CLDV6212_POE.Models;
+using ST10449392_CLDV6212_POE.Services;
 
 namespace ST10449392_CLDV6212_POE.Controllers
 {
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly TableStorageService _tableStorageService;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context, TableStorageService tableStorageService)
         {
             _context = context;
+            _tableStorageService = tableStorageService;
         }
 
         // Admin: view all orders
         public async Task<IActionResult> Index()
         {
-            var role = HttpContext.Session.GetString("Role");
-            if (role != "Admin") return RedirectToAction("AccessDenied");
-
             var orders = await _context.Orders
                 .Include(o => o.User)
-                .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Product)
-                .OrderByDescending(o => o.OrderDate)
+                .Include(o => o.OrderItems) // load order items only
                 .ToListAsync();
+
+            foreach (var order in orders)
+            {
+                foreach (var item in order.OrderItems)
+                {
+                    // Fetch product details from Azure Table Storage for each order item
+                    string partitionKey = "Product";
+                    string rowKey = item.ProductRowKey; // ensure ProductRowKey is tracked in OrderItem
+
+                    item.Product = await _tableStorageService.GetProductAsync(partitionKey, rowKey);
+                }
+            }
 
             return View(orders);
         }
+
 
         // Customer: view their own orders
         public async Task<IActionResult> CustomerOrders()

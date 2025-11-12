@@ -105,17 +105,16 @@ namespace ST10449392_CLDV6212_POE.Controllers
 
             if (!cartItems.Any()) return RedirectToAction("Index");
 
-            var orderItems = cartItems.Select(c => new OrderItem
-            {
-                ProductId = c.CartItemId, // Adjust based on product key usage
-                Quantity = c.Quantity
-            }).ToList();
-
             var order = new Order
             {
                 UserId = user.UserId,
                 Status = "Pending",
-                OrderItems = orderItems
+                OrderDate = DateTime.Now,
+                OrderItems = cartItems.Select(c => new OrderItem
+                {
+                    ProductRowKey = c.ProductRowKey,  // Use string key here
+                    Quantity = c.Quantity
+                }).ToList()
             };
 
             _context.Orders.Add(order);
@@ -124,6 +123,7 @@ namespace ST10449392_CLDV6212_POE.Controllers
 
             return RedirectToAction("OrderSuccess");
         }
+
 
         public IActionResult OrderSuccess()
         {

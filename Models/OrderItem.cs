@@ -8,16 +8,16 @@ namespace ST10449392_CLDV6212_POE.Models
         [Key]
         public int OrderItemId { get; set; }
 
-        [ForeignKey("Order")]
         public int OrderId { get; set; }
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
+        public string ProductRowKey { get; set; }  
 
         public int Quantity { get; set; }
 
-        public virtual Order Order { get; set; }
+        [NotMapped]
+        public Product Product { get; set; }
 
-        public virtual Product Product { get; set; }
+        public virtual Order Order { get; set; }
     }
+
 }
