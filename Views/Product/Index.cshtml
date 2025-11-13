@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Products";
     var currentFilter = ViewData["CurrentFilter"] as string;
-    var userRole = Context.User.IsInRole("Admin") ? "Admin" : "Customer";
+
+    string userRole = Context.Session.GetString("Role") ?? "Guest";
 }
 
 <div class="container mt-4">
