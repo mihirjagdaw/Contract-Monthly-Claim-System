@@ -5,12 +5,14 @@ using ST10449392_CLDV6212_POE.Models;
 using ST10449392_CLDV6212_POE.Services;
 using System.Text;
 using System.Text.Json;
+using ST10449392_CLDV6212_POE.Data;
 
 namespace ST10449392_CLDV6212_POE.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly TableStorageService _tableStorageService;
+        private readonly ApplicationDbContext _context;
 
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
@@ -20,11 +22,12 @@ namespace ST10449392_CLDV6212_POE.Controllers
         //    _tableStorageService = tableStorageService;
         //}
 
-        public CustomerController(IHttpClientFactory httpClientFactory, IConfiguration configuration, TableStorageService tableStorageService)
+        public CustomerController(IHttpClientFactory httpClientFactory, IConfiguration configuration, TableStorageService tableStorageService, ApplicationDbContext context)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _tableStorageService = tableStorageService;
+            _context = context;
         }
 
         //public async Task<IActionResult> Index()
@@ -90,7 +93,20 @@ namespace ST10449392_CLDV6212_POE.Controllers
             // Notice the URL: use your new "/customer-direct" endpoint
             var response = await httpClient.PostAsync($"{apiBaseUrl}customer-direct", httpContent);
             if (response.IsSuccessStatusCode)
+            {
+                var newUser = new User
+                {
+                    Username = customer.Email,
+                    PasswordHash = customer.Password,
+                    Role = "Customer"
+                };
+
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index");
+            }
+                
 
             ViewBag.ErrorMessage = "Failed to add customer.";
             return View(customer);
