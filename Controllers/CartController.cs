@@ -112,7 +112,8 @@ namespace ST10449392_CLDV6212_POE.Controllers
                 OrderDate = DateTime.Now,
                 OrderItems = cartItems.Select(c => new OrderItem
                 {
-                    ProductRowKey = c.ProductRowKey,  // Use string key here
+                    ProductId= c.CartItemId,  // Use string key here
+                    ProductRowKey = c.ProductRowKey,
                     Quantity = c.Quantity
                 }).ToList()
             };
