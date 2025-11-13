@@ -70,13 +70,23 @@ namespace ST10449392_CLDV6212_POE.Controllers
             var order = await _context.Orders
                 .Include(o => o.User)
                 .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.Product)
                 .FirstOrDefaultAsync(o => o.OrderId == id);
 
             if (order == null) return NotFound();
 
+            // Manually load products from Azure Table for each order item
+            foreach (var item in order.OrderItems)
+            {
+                string partitionKey = "Product";
+                string rowKey = item.ProductRowKey;
+
+                item.Product = await _tableStorageService.GetProductAsync(partitionKey, rowKey);
+            }
+
+
             return View(order);
         }
+
 
         // Admin: update order status
         [HttpPost]

@@ -19,7 +19,6 @@
                     <select name="status" class="form-select">
                         <option value="Pending" selected="@("Pending" == Model.Status)">Pending</option>
                         <option value="Processed" selected="@("Processed" == Model.Status)">Processed</option>
-                        <option value="Delivered" selected="@("Delivered" == Model.Status)">Delivered</option>
                     </select>
                     <button type="submit" class="btn btn-success">Update</button>
                 </div>
@@ -39,7 +38,7 @@
         @foreach (var item in Model.OrderItems)
         {
             <tr>
-                <td>@item.Product.Product_Name</td>
+                <td>@(item.Product?.Product_Name ?? "Unknown Product")</td>
                 <td>@item.Quantity</td>
             </tr>
         }
