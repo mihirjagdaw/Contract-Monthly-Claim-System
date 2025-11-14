@@ -8,6 +8,8 @@ It provides a secure and centralized platform for handling **customers, products
 
 📹 **Website Video Demostration:** [https://youtu.be/JjyyWhjXMIk](https://youtu.be/JjyyWhjXMIk)
 
+🆕 **New Features Demonstration:** [https://youtu.be/OGzlC-E4_5A](https://youtu.be/OGzlC-E4_5A)
+
 ---
 
 ## 🚀 Features
