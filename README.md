@@ -1,8 +1,10 @@
-# ABC Retail – Manager’s Portal
+# ABC Retail – Manager’s Portal 
 
 ## 📌 Overview
 The **ABC Retail Manager’s Portal** is a cloud-based web application for managing core business operations.  
 It provides a secure and centralized platform for handling **customers, products, purchases, and contracts**.  
+
+Due to dropped resources, the code will fail to execute. Please watch the youtube videos to see how it once functioned.
 
 🔗 **Live Website:** [https://st10449392.azurewebsites.net/](https://st10449392.azurewebsites.net/)
 
